@@ -27,6 +27,32 @@ Este projeto demonstra como inserir dados de sensores com um ESP32 em um bucket 
 1. Configure seu bucket no Amazon S3 e obtenha a URL do bucket.
 2. Configure as credenciais da sua rede Wi-Fi.
 
+## Bucket Policy
+
+Nas permissões do bucket adicione a seguinte política ao seu bucket S3 para permitir leitura e escrita pública:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::nome_do_bucket/*"
+        },
+        {
+            "Sid": "PublicWritePutObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::nome_do_bucket/*"
+        }
+    ]
+}
+```
+
 ## CORS Configuration
 
 Nas permissões do bucket adicione a seguinte configuração CORS ao seu bucket S3 para permitir solicitações de origem cruzada.
@@ -41,29 +67,5 @@ Substitua http://127.0.0.1:5500 conforme as informações da sua máquina
     "AllowedHeaders": ["*"]
   }
 ]
+
 ```
-
-## Bucket Policy
-
-Nas permissões do bucket adicione a seguinte política ao seu bucket S3 para permitir leitura e escrita pública:
-
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "PublicReadGetObject",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::esp32dados/*"
-        },
-        {
-            "Sid": "PublicWritePutObject",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::esp32dados/*"
-        }
-    ]
-}
